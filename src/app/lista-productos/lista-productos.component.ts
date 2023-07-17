@@ -4,12 +4,9 @@ import { ProductoModel } from '../shared/producto.model';
 import { PedidoEnviarModel } from '../shared/pedidoenviar.model';
 import { ProductoService } from '../shared/producto.service';
 import { PedidoService } from '../shared/pedido.service';
-import { CarritoComponent } from '../carrito/carrito.component';
 import { validarAutorizacion,validarRol } from '../shared/utils';
 import { Router } from '@angular/router';
 import { ClienteService } from '../shared/cliente.service';
-//import { PedidoModel } from '../shared/pedido.model';
-//import { DetallePedidoModel } from '../shared/detallepedido.model';
 
 
 @Component({

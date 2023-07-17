@@ -46,8 +46,8 @@ export class AutenticacionComponent {
           this.correo=this.correo_registro;
           this.contrasena=this.contrasena_registro;
           this.iniciarSesion()},
-        error: error => { 
-          this.errorRegistrar=error.error.mensaje;}});
+        error: error => {this.errorRegistrar=error.error.mensaje;}
+      });
     }
     else {
       alert("Las contraseñas no coinciden");

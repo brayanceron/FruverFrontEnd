@@ -10,7 +10,6 @@ import { ProductoService } from './shared/producto.service';
 import { PedidoService } from './shared/pedido.service';
 import { NavbarComponent } from './navbar/navbar.component';
 import { ListarPedidosComponent } from './listar-pedidos/listar-pedidos.component';
-import { CarritoComponent } from './carrito/carrito.component';
 import { AutenticacionComponent } from './autenticacion/autenticacion.component';
 import { PerfilComponent } from './perfil/perfil.component';
 
@@ -21,7 +20,6 @@ import { PerfilComponent } from './perfil/perfil.component';
     EditarProductosComponent,
     NavbarComponent,
     ListarPedidosComponent,
-    CarritoComponent,
     AutenticacionComponent,
     PerfilComponent,
   ],
