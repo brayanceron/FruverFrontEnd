@@ -19,7 +19,6 @@ export class PedidoService {
     return this.http.get<PedidoModel[]>(`${this.BASE_URL}/pedidos/cliente/${idCliente}`,this.getHeaders());
   }
   agregarPedido(idCliente:string ,carrito: PedidoEnviarModel[]) {
-    console.log(carrito);
     return this.http.post<string>(`${this.BASE_URL}/pedidos`,{idCliente:idCliente,productos:carrito},this.getHeaders()); //idCliete debe ser el de que esta logeado
   }
   borrarPedido(idPedido: string) { 

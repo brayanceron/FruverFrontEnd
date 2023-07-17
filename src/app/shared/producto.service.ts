@@ -16,30 +16,13 @@ export class ProductoService {
   obtenerProducto(idProducto: string) { 
     return this.http.get<ProductoModel[]>(`${this.BASE_URL}/producto/${idProducto}`,this.getHeaders());
   }
-  /*
-  agregarProducto-1(producto: ProductoModel) {
-    return this.http.post<string>(`${this.BASE_URL}/productos`,producto,this.getHeaders());
-  }*/
+
   agregarProducto(producto: FormData) {
-    return this.http.post<string>(`${this.BASE_URL}/productos`,producto,{
-      headers: {
-        //'Content-Type': 'multipart/form-data',
-        //'Content-Type': 'application/x-www-form-urlencoded',
-        'Authorization':localStorage.getItem('token')!
-      }
-    });
+    return this.http.post<string>(`${this.BASE_URL}/productos`,producto,this.getHeaders());
   }
-  /*actualizarProducto(producto: ProductoModel) { 
-    return this.http.put<string>(`${this.BASE_URL}/productos/${producto.idProducto}`,producto,this.getHeaders());
-  }*/
+  
   actualizarProducto(producto: FormData) { 
-    return this.http.put<string>(`${this.BASE_URL}/productos/${producto.get('idProducto')}`,producto,{
-      headers: {
-        //'Content-Type': 'multipart/form-data',
-        //'Content-Type': 'application/x-www-form-urlencoded',
-        'Authorization':localStorage.getItem('token')!
-      }
-    });
+    return this.http.put<string>(`${this.BASE_URL}/productos/${producto.get('idProducto')}`,producto,this.getHeaders());
   }
   borrarProducto(idProducto: string) { 
     return this.http.delete<string>(`${this.BASE_URL}/productos/${idProducto}`,this.getHeaders());
@@ -49,7 +32,6 @@ export class ProductoService {
      return {
       headers: new HttpHeaders({
         'Authorization':localStorage.getItem('token')!
-      })
-    };
+      })};
   }
 }
