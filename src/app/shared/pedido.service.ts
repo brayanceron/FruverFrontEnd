@@ -12,12 +12,8 @@ export class PedidoService {
   BASE_URL = 'http://localhost:3000';
   constructor(private http: HttpClient) { }
 
-  
   obtenerPedidos() { 
     return this.http.get<PedidoModel[]>(`${this.BASE_URL}/pedidos`,this.getHeaders())
-    /*.pipe(
-      catchError(this.tokenExpirado)
-    );*/
   }
   obtenerPedidosCliente(idCliente:string) { 
     return this.http.get<PedidoModel[]>(`${this.BASE_URL}/pedidos/cliente/${idCliente}`,this.getHeaders());
@@ -30,22 +26,15 @@ export class PedidoService {
     return this.http.delete<string>(`${this.BASE_URL}/pedidos/${idPedido}`,this.getHeaders());
   }
 
-
   procesarPedido(idPedido:string){
     return this.http.put<string>(`${this.BASE_URL}/pedidos/procesar/${idPedido}`,{},this.getHeaders()); //idCliete debe ser el de que esta logeado
   }
-
-
 
   getHeaders(){
     return {
      headers: new HttpHeaders({
        'Authorization':localStorage.getItem('token')!
-     })
-   };
+     })};
  }
 
- tokenExpirado(error: HttpErrorResponse){
-    return obsevableThrowError(error);
- }
 }

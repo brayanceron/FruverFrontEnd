@@ -21,26 +21,18 @@ export class ClienteService {
   actualizarCliente(cliente: ClienteModel) { 
     return this.http.put<string>(`${this.BASE_URL}/clientes/${cliente.idCliente}`,cliente,this.getHeaders());
   }
-
-
-
-
+  //AUTENTICACION
+  
   login(correo: string, contrasena: string) {
     return this.http.post<any>(`${this.BASE_URL}/login`, { correo, contrasena }, { observe: 'response' });
   }
 
   verificarToken(): boolean {
-    //return localStorage.getItem('token') ? true: false;
     let b = true;
     this.http.get<any>(`${this.BASE_URL}/verificarToken`, this.getHeaders()).subscribe({
-      error: error => {
-        if (error.status == 401) {
-          b = false;
-        }
-      }
+      error: error => {  if (error.status == 401) {b = false;}}
     });
     return b;
-
   }
   getRol(){
     return this.http.get<any>(`${this.BASE_URL}/getRol`, this.getHeaders())
@@ -50,8 +42,6 @@ export class ClienteService {
     return {
       headers: new HttpHeaders({
         'Authorization': localStorage.getItem('token')!
-      })
-    };
+      })};
   }
-
 }
