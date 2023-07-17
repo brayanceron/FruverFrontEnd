@@ -1,0 +1,44 @@
+<app-navbar></app-navbar>
+<br><br>
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-6">
+      <form (ngSubmit)="onSubmit()" #productoForm="ngForm" enctype="multipart/form-data">
+        <fieldset class="form-group">
+          <div class="col-sm-12">
+            <h1 class="text-center">Registrar Producto</h1>
+          </div>
+        </fieldset>
+        <fieldset class="form-group">
+          <div class="col-sm-12">
+            <label class="control-label" for="nombre">Nombre</label>
+            <input type="text" class="form-control" required [(ngModel)]="producto.nombre" name="nombre" >
+          </div>
+        </fieldset>
+        <fieldset class="form-group">
+          <div class="col-sm-12">
+            <label class="control-label" for="email">Detalle</label>
+            <input type="email" class="form-control" required [(ngModel)]="producto.detalle" name="detalle" >
+          </div>
+        </fieldset>
+        <fieldset class="form-group">
+          <div class="col-sm-12">
+            <label class="control-label" for="email">Valor</label>
+            <input type="email" class="form-control" required [(ngModel)]="producto.valor" name="valor" >
+          </div>
+        </fieldset>
+        <fieldset class="form-group">
+          <div class="col-sm-12">
+            <label class="control-label" for="file">Archivo</label>
+            <input type="file" class="form-control" required (change)="onArchivoSelecionado($event)" accept="image/*" name="file">
+          </div>
+        </fieldset>
+        <fieldset class="form-group">
+          <div class="col-sm-offset-2 col-sm-10">
+            <button type="submit" class="btn btn-primary" [disabled]="!productoForm.form.valid">Enviar</button>
+          </div>
+        </fieldset>
+      </form>
+    </div>
+  </div>
+</div>

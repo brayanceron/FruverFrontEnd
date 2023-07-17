@@ -1,0 +1,19 @@
+<p>carrito works!</p>
+<p>{{prueba}}</p>
+<!-- Carrito de compras-->
+<div class="sticky-top">
+    <h3>Carrito de compras</h3>
+    <table>
+      <tr>
+        <td>Producto</td>
+        <td>Cantidad</td>
+        <td>Action</td>
+      </tr>
+      <tr *ngFor="let p of carrito">
+        <td>{{p.idProducto}}</td>
+        <td>{{p.cantidadProducto}}</td>
+      </tr>
+    </table>
+
+  </div>
+  <p>{{contador}}</p>

@@ -1,0 +1,132 @@
+<app-navbar></app-navbar>
+
+
+
+<div class="row">
+  <div class="col-9" >
+    <!-- Tabla Productos-->
+    --<div class="container">
+      <div class="row">
+        <h3>Productos</h3>
+        <div class="col-4 p-3" *ngFor="let producto of productos | async">
+          <div class="card">
+            <img src="{{BASE_URL}}/productos/{{producto.imagen}}"
+              class="card-img-top" alt="Fissure in Sandstone" style="height: 20em;"/>
+            <div class="card-body">
+              <h5 class="card-title">{{ producto.nombre }}</h5>
+              <p class="card-text">{{ producto.detalle }} a {{ producto.valor }} $ la unidad </p>
+              <a class="btn btn-info" *ngIf="rol=='admin'" [routerLink]="['/productos/editar/', producto.idProducto]">Editar <i
+                  class="fas fa-pen"></i></a>
+              <a class="btn btn-danger" *ngIf="rol=='admin'" (click)="borrarProducto(producto.idProducto)">Borrar <i
+                  class="fas fa-trash-can"></i></a>
+              <a class="btn btn-success" *ngIf="rol=='user'"
+                (click)="anadirAlCarrito(producto.idProducto,producto.nombre,producto.valor)">Añadir
+                <i class="fas fa-cart-shopping"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+
+  </div>
+
+
+
+  <div class="col-3 sticky-top" *ngIf="rol=='user'">
+    <!-- Carrito de compras-->
+    <div class="" >
+      <h3>Carrito de compras</h3>
+      <table class="table table-striped">
+        <!--
+        <tr>
+          <td>Producto</td>
+          <td>Valor</td>
+          <td>Cantidad</td>
+          <td>Total</td>
+          <td>Action</td>
+        </tr>
+      -->
+        <tbody>
+          <tr *ngFor="let p of carrito" class="">
+            <td class=""><small>{{p.nombre}}</small></td>
+            <td class=""><small>{{p.valor}}$ x{{p.modelo.cantidadProducto}}</small></td>
+            <!--<td class=""><small>x{{p.modelo.cantidadProducto}}</small></td>-->
+            <td class=""><small>{{p.valor*p.modelo.cantidadProducto}}$</small></td>
+            <td class="">
+              <div class="btn-group1" role="group" aria-label="Basic example">
+                <button type="button" (click)="masUno(p.idProducto)"
+                  class="btn btn-success btn-floating btn-sm">+</button>
+                <button type="button" (click)="menosUno(p.idProducto)"
+                  class="btn btn-primary btn-floating btn-sm">-</button>
+              </div>
+            </td>
+
+          </tr>
+          <tr>
+            <td></td>
+
+            <td></td>
+            <td><small>{{totalCarrito}} $</small></td>
+            <td><button type="button" class="btn btn-danger btn-sm" (click)="vaciarCarrito()">Vaciar <i
+                  class="fas fa-trash-can"></i></button></td>
+          </tr>
+        </tbody>
+      </table>
+      <button class="btn btn-warning" data-mdb-toggle="modal" data-mdb-target="#comprarModal">
+        Comprar <i class="fas fa-dollar-sign"></i>
+      </button>
+
+    </div>
+
+  </div>
+</div>
+
+
+
+<!-- Modales -->
+<div class="modal fade" id="comprarModal" tabindex="-1" aria-labelledby="comprarModalLabel" aria-hidden="true" *ngIf="rol=='user'">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="comprarModalLabel">Confirmar pedido</h5>
+        <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p *ngIf="totalCarrito!=0">Esta operación es irreversible. ¿Está seguro que quiere confirmar la compra?</p>
+        <p *ngIf="totalCarrito==0">No hay productos en el carrito</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal">Cerrar</button>
+        <button type="button" *ngIf="totalCarrito!=0" class="btn btn-warning" data-mdb-dismiss="modal"
+          (click)="comprar()" data-mdb-toggle="modal" data-mdb-target="#comprarConfirmadaModal">
+          Comprar <i class="fas fa-dollar-sign"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<div class="modal fade" id="comprarConfirmadaModal" tabindex="-1" aria-labelledby="comprarConfirmadaModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="comprarConfirmadaModalLabel">Compra Exitosa</h5>
+        <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Compra realizada con exito, podras ver el estado de tu compra en la pestaña de pedidos
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success" data-mdb-dismiss="modal">
+          Ok <i class="far fa-circle-check"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

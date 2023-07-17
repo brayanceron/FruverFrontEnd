@@ -1,0 +1,143 @@
+<app-navbar></app-navbar>
+<div class="container">
+    <div class="row">
+        <div class="col-10">
+
+            <h2 >Mis Pedidos</h2>
+
+            <table class="table table-striped">
+                <thead>
+                    <tr class="row">        
+                        <th class="col-sm-1"> Estado</th>
+                        <th class="col-sm-2" *ngIf="rol=='admin'"> Cliente </th>
+                        <th class="col-sm-2" *ngIf="rol=='user'"> Proveedor </th>
+                        <th class="col-sm-3"> Fecha </th>
+                        <th class="col-sm-2"> Total </th>
+                        <th class="col-sm-3"> Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let pedido of pedidos | async" class="row">
+                        <td *ngIf="pedido.procesado == true" class="col-sm-1"><span class="badge badge-success">Procesado</span></td>
+                        <td *ngIf="pedido.procesado == false" class="col-sm-1"><span class="badge badge-warning">Pendiente</span></td>
+                        <td class="col-sm-2" *ngIf="rol=='admin'">{{pedido.cliente.nombres}} {{pedido.cliente.apellidos}}</td>
+                        <td class="col-sm-2" *ngIf="rol=='user'">Fruver S.A.S</td>
+                        <td class="col-sm-3">{{pedido.createdAt}}</td>
+                        <td class="col-sm-2">{{pedido.total}} $</td>
+                        <td class="col-sm-2">
+                            <button class="btn btn-primary" (click)="verProductosDePedido(pedido.idPedido)" data-mdb-toggle="modal" data-mdb-target="#productosModal">
+                                 Ver Productos <i class="fas fa-eye"></i>
+                            </button>
+                        </td>
+                        <td class="col-sm-2" *ngIf="rol=='admin' && pedido.procesado == false">
+                            <button class="btn btn-success" (click)="setIdPedidoProcesar(pedido.idPedido)" data-mdb-toggle="modal" data-mdb-target="#procesarPedidoModal" >
+                                Marcar Como Procesado <i class="fas fa-circle-check"></i>
+                            </button>
+                        </td>
+                        <td class="col-sm-2" *ngIf="rol=='user' && pedido.procesado == false" >
+                            <button class="btn btn-danger" (click)="setIdPedidoBorrar(pedido.idPedido)" data-mdb-toggle="modal" data-mdb-target="#eliminarPedidoModal" >
+                                Cancelar y borrar <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </td>
+                      
+                        <td class="col-sm-2" *ngIf="pedido.procesado == true" >
+                          <button class="btn btn-warning" (click)="setIdPedidoBorrar(pedido.idPedido)" data-mdb-toggle="modal" data-mdb-target="#eliminarPedidoModal" >
+                              Borrar del historial <i class="fas fa-trash-alt"></i>
+                          </button>
+                      </td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+</div>
+
+
+
+<!-- Modal ver Productos-->
+<div class="modal fade modal-lg" id="productosModal" tabindex="-1" aria-labelledby="productosModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="productosModalLabel">Productos del pedido</h5>
+          <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <table class="table table-striped" *ngIf="detallePedidoSeleccionado">
+                <thead>
+                    <tr class="row">
+                        <th class="col-sm-3"> Producto </th>
+                        <th class="col-sm-3"> Valor </th>
+                        <th class="col-sm-2"> Cantidad </th>
+                        <th class="col-sm-4"> Total </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="row" *ngFor="let det of detallePedidoSeleccionado">
+                        <td class="col-sm-3">{{det.producto.nombre}}</td>
+                        <td class="col-sm-3">{{det.producto.valor}} $</td>
+                        <td class="col-sm-2">x{{det.cantidadProducto}}</td>
+                        <td class="col-sm-4">{{det.totalProducto}} $</td>
+                    </tr>
+                </tbody>
+                
+            </table>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal">Cerrar</button>
+          <!--<button class="btn btn-warning">Ok</button>-->
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  
+<!-- Modal confirmar Eliminar pedido-->
+<div class="modal fade" id="eliminarPedidoModal" tabindex="-1" aria-labelledby="eliminarPedidoModalLabel"
+aria-hidden="true">
+<div class="modal-dialog">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title" id="eliminarPedidoModalModalLabel">Eliminar Pedido</h5>
+      <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+    </div>
+    <div class="modal-body">
+      Esta operación es irreversible. ¿Está seguro de que desea eliminar el pedido?
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal">Cancelar</button>
+      <button type="button" class="btn btn-danger" data-mdb-dismiss="modal" (click)="borrarPedido()">
+        Confirmar <i class="far fa-circle-check" ></i>
+      </button>
+    </div>
+  </div>
+</div>
+</div>
+
+
+
+<!-- Modal confirmar procesado pedido-->
+<div class="modal fade" id="procesarPedidoModal" tabindex="-1" aria-labelledby="procesarPedidoModalModalLabel"
+aria-hidden="true">
+<div class="modal-dialog">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title" id="procesarPedidoModalLabel">Procesar Pedido</h5>
+      <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+    </div>
+    <div class="modal-body">
+      Un correo electrónico de confirmación se enviará a su cliente.
+      ¿Está seguro de que desea marcar como procesado el pedido?
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal">Cancelar</button>
+      <button type="button" class="btn btn-success" data-mdb-dismiss="modal" (click)="procesarPedido()">
+        Confirmar <i class="far fa-circle-check" ></i>
+      </button>
+    </div>
+  </div>
+</div>
+</div>
+
