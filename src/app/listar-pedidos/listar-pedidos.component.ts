@@ -48,7 +48,7 @@ export class ListarPedidosComponent implements OnInit {
       });
     });
   }
-  
+
   setIdPedidoProcesar(idPedido: string){this.idPedidoProcesar=idPedido;}
   procesarPedido() {
     if(this.idPedidoProcesar==""){ alert("Error, No se puede completar la operación");}
@@ -74,8 +74,4 @@ export class ListarPedidosComponent implements OnInit {
           }*/
         }});
   }
-
-
-
-
 }
