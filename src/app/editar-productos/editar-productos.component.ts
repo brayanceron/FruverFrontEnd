@@ -5,7 +5,6 @@ import { ProductoModel } from '../shared/producto.model';
 import { validarAutorizacion } from '../shared/utils';
 import { ClienteService } from '../shared/cliente.service';
 import { validarRol } from '../shared/utils';
-//import { FormGroup,FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-editar-productos',
@@ -15,7 +14,7 @@ import { validarRol } from '../shared/utils';
 export class EditarProductosComponent implements OnInit {
   idProducto = '';
   rol: string = '';
-  producto = new ProductoModel("", "", "", 1,"");
+  producto = new ProductoModel("", "", "", 0,"");
   archivoSeleccionado:any
 
   constructor(private productoService: ProductoService, private clienteService: ClienteService, private route: ActivatedRoute, private router: Router) { }
@@ -28,22 +27,16 @@ export class EditarProductosComponent implements OnInit {
         error: error => {validarAutorizacion(error, this.router); /*console.log(error);*/}
       });
     }
-    else {console.log('Nuevo Producto');}//nuevo producto
 
-    //Estableciendo el rol
-    this.clienteService.getRol().subscribe({
+    this.clienteService.getRol().subscribe({//Estableciendo el rol
       next: data => {
         this.rol = data.rol;
         if (this.rol == "user") { this.router.navigate(['/productos']); }},
       error: error => { validarRol(error, this.router); /*console.log(error)*/}
     });
-
   }
 
-  onArchivoSelecionado(e:any){
-    console.log(e);
-    this.archivoSeleccionado=e.target.files[0];
-  }
+  onArchivoSelecionado(e:any){this.archivoSeleccionado=e.target.files[0];/*console.log(e);*/}
   onSubmit() {
     let fd = new FormData();
     fd.append('nombre', this.producto.nombre);
@@ -66,6 +59,5 @@ export class EditarProductosComponent implements OnInit {
         error: error => { validarAutorizacion(error, this.router);}
       });
     }
-
   }
 }
