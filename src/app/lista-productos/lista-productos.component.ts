@@ -22,6 +22,8 @@ export class ListaProductosComponent implements OnInit {
   totalCarrito: number = 0;
   BASE_URL = SERVER_BASE_URL;
 
+  patron="";
+
   constructor(private productoService: ProductoService, private pedidoService: PedidoService,private clienteService:ClienteService, private router: Router) { }
   ngOnInit() {
     this.productos = this.productoService.obtenerProductos();
@@ -39,11 +41,15 @@ export class ListaProductosComponent implements OnInit {
         next: data => {this.ngOnInit();/*console.log("Registro Eliminado");*/}, 
         error: error => {
           if(error.status==500){alert(error.error.mensaje);return;}
-          else{validarAutorizacion(error, this.router);}
-        }});
+          else{validarAutorizacion(error, this.router);}}
+    });
+  }
+  buscarProducto(nombre: string) {
+    if(this.patron=='') return true
+    else if((nombre.toLowerCase()).includes(this.patron.toLowerCase()) && this.patron!='') return true;
+    else return false;
   }
 
-  //-------------------------------------------------------------
   anadirAlCarrito(idProducto: string, nombreProducto: string, valor: number,) {
     let b: Boolean = false;
     this.carrito.forEach(p => {
@@ -103,7 +109,5 @@ export class ListaProductosComponent implements OnInit {
     this.carrito = [];
     this.totalCarrito = 0;
   }
-
-
 
 }

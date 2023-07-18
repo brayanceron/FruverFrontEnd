@@ -50,14 +50,12 @@ export class EditarProductosComponent implements OnInit {
       fd.append('idProducto',this.idProducto);
       this.productoService.actualizarProducto(fd).subscribe({
           next: data => {this.router.navigate(['/productos']);}, 
-          error: error => { validarAutorizacion(error, this.router) }
-        });
+          error: error => { validarAutorizacion(error, this.router) }});
     }
     else {//nuevo producto
       this.productoService.agregarProducto(fd).subscribe({
         next: data => {this.router.navigate(['/productos']);},
-        error: error => { validarAutorizacion(error, this.router);}
-      });
+        error: error => { validarAutorizacion(error, this.router);}});
     }
   }
 }
