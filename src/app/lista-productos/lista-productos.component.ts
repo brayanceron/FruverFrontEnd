@@ -32,7 +32,7 @@ export class ListaProductosComponent implements OnInit {
     //Estableciendo el rol
     this.clienteService.getRol().subscribe({
       next: data=>{this.rol=data.rol;this.idCliente = data.idCliente},
-      error: error=>{validarRol(error);console.log(error)}
+      error: error=>{validarRol(error);}
     });
   }
 
@@ -78,8 +78,7 @@ export class ListaProductosComponent implements OnInit {
     let index: number = 0;
     this.carrito.forEach(p => {
       if (p.idProducto == idProducto) {
-        let cant = p.modelo.cantidadProducto;
-        if (cant - 1 > 0) {p.modelo.cantidadProducto--;}
+        if ((p.modelo.cantidadProducto - 1) > 0) {p.modelo.cantidadProducto--;}
         else {this.carrito.splice(index, 1);}
       }
       index++;
@@ -91,10 +90,8 @@ export class ListaProductosComponent implements OnInit {
     let dataEnviar: PedidoEnviarModel[] = [];
     this.carrito.forEach(element => {dataEnviar.push(element.modelo);});
     this.pedidoService.agregarPedido(this.idCliente,dataEnviar).subscribe({
-        next: data => {
-          this.carrito = [];
-          this.totalCarrito = 0;},
-        error: error => { validarAutorizacion(error) }
+        next: data => {this.vaciarCarrito();},
+        error: error => { validarAutorizacion(error);}
       });
   }
 

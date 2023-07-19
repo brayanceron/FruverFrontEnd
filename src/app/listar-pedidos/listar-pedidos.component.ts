@@ -14,9 +14,9 @@ import { validarRol } from '../shared/utils';
 })
 export class ListarPedidosComponent implements OnInit {
   pedidos: Observable<PedidoModel[]> | undefined;
-  detallePedidoSeleccionado: any | undefined;
   idCliente:string = '';
   rol: string = '';
+  detallePedidoSeleccionado: any | undefined;
   idPedidoBorrar:string='';
   idPedidoProcesar:string='';
 
