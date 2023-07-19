@@ -27,12 +27,12 @@ export class ListaProductosComponent implements OnInit {
   constructor(private productoService: ProductoService, private pedidoService: PedidoService,private clienteService:ClienteService, private router: Router) { }
   ngOnInit() {
     this.productos = this.productoService.obtenerProductos();
-    this.productos.subscribe({error: error => {validarAutorizacion(error, this.router);console.log(error)}});
+    this.productos.subscribe({error: error => {validarAutorizacion(error);console.log(error)}});
 
     //Estableciendo el rol
     this.clienteService.getRol().subscribe({
       next: data=>{this.rol=data.rol;this.idCliente = data.idCliente},
-      error: error=>{validarRol(error, this.router);console.log(error)}
+      error: error=>{validarRol(error);console.log(error)}
     });
   }
 
@@ -41,7 +41,7 @@ export class ListaProductosComponent implements OnInit {
         next: data => {this.ngOnInit();/*console.log("Registro Eliminado");*/}, 
         error: error => {
           if(error.status==500){alert(error.error.mensaje);return;}
-          else{validarAutorizacion(error, this.router);}}
+          else{validarAutorizacion(error);}}
     });
   }
   buscarProducto(nombre: string) {
@@ -94,7 +94,7 @@ export class ListaProductosComponent implements OnInit {
         next: data => {
           this.carrito = [];
           this.totalCarrito = 0;},
-        error: error => { validarAutorizacion(error, this.router) }
+        error: error => { validarAutorizacion(error) }
       });
   }
 

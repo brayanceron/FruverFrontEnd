@@ -16,7 +16,7 @@ export class NavbarComponent implements OnInit{
     //Estableciendo el rol
     this.clienteService.getRol().subscribe({
       next: data=>{this.rol=data.rol},
-      error: error=>{validarRol(error, this.router);console.log(error)}
+      error: error=>{validarRol(error);console.log(error)}
     });
   }
 

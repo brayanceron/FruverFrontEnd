@@ -24,7 +24,7 @@ export class EditarProductosComponent implements OnInit {
     if (this.idProducto) {//Viene de Editar
       this.productoService.obtenerProducto(this.idProducto).subscribe({
         next: data => {this.producto = data[0];}, 
-        error: error => {validarAutorizacion(error, this.router); /*console.log(error);*/}
+        error: error => {validarAutorizacion(error); /*console.log(error);*/}
       });
     }
 
@@ -32,7 +32,7 @@ export class EditarProductosComponent implements OnInit {
       next: data => {
         this.rol = data.rol;
         if (this.rol == "user") { this.router.navigate(['/productos']); }},
-      error: error => { validarRol(error, this.router); /*console.log(error)*/}
+      error: error => { validarRol(error); /*console.log(error)*/}
     });
   }
 
@@ -50,12 +50,12 @@ export class EditarProductosComponent implements OnInit {
       fd.append('idProducto',this.idProducto);
       this.productoService.actualizarProducto(fd).subscribe({
           next: data => {this.router.navigate(['/productos']);}, 
-          error: error => { validarAutorizacion(error, this.router) }});
+          error: error => { validarAutorizacion(error) }});
     }
     else {//nuevo producto
       this.productoService.agregarProducto(fd).subscribe({
         next: data => {this.router.navigate(['/productos']);},
-        error: error => { validarAutorizacion(error, this.router);}});
+        error: error => { validarAutorizacion(error);}});
     }
   }
 }

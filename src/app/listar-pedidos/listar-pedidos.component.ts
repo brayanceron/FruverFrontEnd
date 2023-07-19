@@ -29,14 +29,14 @@ export class ListarPedidosComponent implements OnInit {
 
         if (this.rol == "admin") {
           this.pedidos = this.pedidoService.obtenerPedidos();
-          this.pedidos.subscribe({error: error => validarAutorizacion(error, this.router)});
+          this.pedidos.subscribe({error: error => validarAutorizacion(error)});
         }
         else if (this.rol == "user") {
           this.pedidos = this.pedidoService.obtenerPedidosCliente(this.idCliente);
-          this.pedidos.subscribe({error: error => validarAutorizacion(error, this.router)});
+          this.pedidos.subscribe({error: error => validarAutorizacion(error)});
         }
       },
-    error: error => { validarRol(error, this.router); console.log(error) }
+    error: error => { validarRol(error); console.log(error) }
     });
   }
 
@@ -54,7 +54,7 @@ export class ListarPedidosComponent implements OnInit {
     if(this.idPedidoProcesar==""){ alert("Error, No se puede completar la operación");}
     this.pedidoService.procesarPedido(this.idPedidoProcesar).subscribe({
       next: data => {this.ngOnInit();/*console.log("Registro Procesado");*/},
-      error: error => validarAutorizacion(error, this.router)});
+      error: error => validarAutorizacion(error)});
   }
  
   setIdPedidoBorrar(idPedido: string){this.idPedidoBorrar=idPedido; }
@@ -63,15 +63,7 @@ export class ListarPedidosComponent implements OnInit {
     this.pedidoService.borrarPedido(this.idPedidoBorrar).subscribe({
         next: data => {this.ngOnInit();/*console.log("Registro Eliminado");*/}, 
         error: error => {
-          validarAutorizacion(error, this.router);
-          alert(error.error.mensaje);
-          /*if(error.status==500){
-            alert(error.error.mensaje);
-            return;
-          }else{
-            validarAutorizacion(error, this.router) 
-
-          }*/
+          validarAutorizacion(error);
         }});
   }
 }

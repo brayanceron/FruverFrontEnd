@@ -35,13 +35,11 @@ export class PerfilComponent implements OnInit {
             this.apellidos=data[0].apellidos; this.edit_apellidos=this.apellidos;
             this.correo=data[0].correo;
           },
-          error: error => {validarAutorizacion(error, this.router); console.log(error)}
+          error: error => {validarAutorizacion(error); /*console.log(error);*/}
         });},
-      error: error => { validarRol(error, this.router); console.log(error) }
+      error: error => { validarRol(error); /*console.log(error);*/ }
     });
   }
-
-
   
   borrarCliente() {
     this.clienteService.borrarCliente(this.idCliente).subscribe({
@@ -50,7 +48,7 @@ export class PerfilComponent implements OnInit {
           this.router.navigate(['/login']);}, 
         error: error => {
           if(error.status==500){alert(error.error.mensaje);return;}
-          else{validarAutorizacion(error, this.router);}}
+          else{validarAutorizacion(error);}}
       });
   }
 
@@ -59,14 +57,7 @@ export class PerfilComponent implements OnInit {
     let clienteModificado=new ClienteModel(this.idCliente,this.nombres,this.apellidos,"","","");
     this.clienteService.actualizarCliente(clienteModificado).subscribe({
         next: data => {this.ngOnInit();}, 
-        error: error => { 
-          validarAutorizacion(error, this.router);
-          console.log(error)
-          console.log(error.message)
-          alert("No se pudo completar la operación");}
+        error: error => { validarAutorizacion(error); /*console.log(error);console.log(error.message);*/}
       });
   }
-
-
-
 }

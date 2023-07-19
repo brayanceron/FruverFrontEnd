@@ -23,7 +23,7 @@
                         <td *ngIf="pedido.procesado == false" class="col-sm-1"><span class="badge badge-warning">Pendiente</span></td>
                         <td class="col-sm-2" *ngIf="rol=='admin'">{{pedido.cliente.nombres}} {{pedido.cliente.apellidos}}</td>
                         <td class="col-sm-2" *ngIf="rol=='user'">Fruver S.A.S</td>
-                        <td class="col-sm-3">{{pedido.createdAt}}</td>
+                        <td class="col-sm-3">{{pedido.createdAt.substring(0,10)}}</td>
                         <td class="col-sm-2">{{pedido.total}} $</td>
                         <td class="col-sm-2">
                             <button class="btn btn-primary" (click)="verProductosDePedido(pedido.idPedido)" data-mdb-toggle="modal" data-mdb-target="#productosModal">
