@@ -8,14 +8,14 @@ import { logiAgainnGuard, loginGuard } from './guards/autenticacion.guard';
 import { PerfilComponent } from './perfil/perfil.component';
 
 const routes: Routes = [
-  { path: 'login', component: AutenticacionComponent, canActivate:[logiAgainnGuard]},
+  { path: 'login', component: AutenticacionComponent,                         canActivate:[logiAgainnGuard]},
 
-  { path: 'productos', component: ListaProductosComponent, canActivate:[loginGuard] },
+  { path: 'productos', component: ListaProductosComponent,                    canActivate:[loginGuard] },
   { path: 'productos/editar/:idProducto', component: EditarProductosComponent,canActivate:[loginGuard] },
-  { path: 'productos/agregar', component: EditarProductosComponent, canActivate:[loginGuard] },
+  { path: 'productos/agregar', component: EditarProductosComponent,           canActivate:[loginGuard] },
 
-  { path: 'pedidos', component: ListarPedidosComponent, canActivate:[loginGuard] },
-  { path: 'perfil', component: PerfilComponent, canActivate:[loginGuard] },
+  { path: 'pedidos', component: ListarPedidosComponent,                       canActivate:[loginGuard] },
+  { path: 'perfil', component: PerfilComponent,                               canActivate:[loginGuard] },
 
   { path: '**', redirectTo: '/productos', pathMatch: 'full' }
 ];
@@ -25,3 +25,4 @@ const routes: Routes = [
   exports: [RouterModule]
 })
 export class AppRoutingModule { }
+

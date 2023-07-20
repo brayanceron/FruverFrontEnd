@@ -30,3 +30,5 @@ function getHeaders() {
 }
 
 export { SERVER_BASE_URL, validarAutorizacion, validarRol, getHeaders }
+
+

@@ -19,6 +19,7 @@ const loginGuard = () => {
     }
 
 }
+
 const logiAgainnGuard = () => {
     const router = inject(Router);
     if (localStorage.getItem('token')) {
@@ -29,3 +30,7 @@ const logiAgainnGuard = () => {
 
 }
 export { loginGuard, logiAgainnGuard }
+
+
+
+
