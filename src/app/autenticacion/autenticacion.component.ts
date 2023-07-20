@@ -1,9 +1,7 @@
 import { Component } from '@angular/core';
 import { ClienteService } from '../shared/cliente.service';
 import { Router } from '@angular/router';
-import { FormsModule } from '@angular/forms';
 import { ClienteModel } from '../shared/cliente.model';
-
 
 
 @Component({
@@ -12,7 +10,6 @@ import { ClienteModel } from '../shared/cliente.model';
   styleUrls: ['./autenticacion.component.css']
 })
 export class AutenticacionComponent {
-
   correo: string = 'admin';
   contrasena: string = 'admin';
 
@@ -25,7 +22,6 @@ export class AutenticacionComponent {
   errorLogin:string='';
   errorRegistrar:string='';
 
-
   constructor(private clienteService: ClienteService, private router: Router) { }
 
   async iniciarSesion() {
@@ -36,7 +32,6 @@ export class AutenticacionComponent {
       error: error => {this.errorLogin=error.error.msg;}
     });
   }
-
 
   registrar() {
     if (this.contrasena_registro == this.contrasena_registro2) {
@@ -49,8 +44,8 @@ export class AutenticacionComponent {
         error: error => {this.errorRegistrar=error.error.mensaje;}
       });
     }
-    else {
-      alert("Las contraseñas no coinciden");
-    }
+    else {alert("Las contraseñas no coinciden"); }
   }
 }
+
+

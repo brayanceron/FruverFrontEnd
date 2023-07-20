@@ -1,4 +1,4 @@
-import { HttpClient,HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ProductoModel } from './producto.model';
 import { SERVER_BASE_URL,getHeaders} from '../shared/utils';
@@ -30,3 +30,5 @@ export class ProductoService {
   }
 
 }
+
+

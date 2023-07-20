@@ -22,6 +22,7 @@ export class PerfilComponent implements OnInit {
   correo:string="";
 
   constructor(private clienteService: ClienteService,private router: Router){}
+
   ngOnInit(): void {
     this.clienteService.getRol().subscribe({
       next: async data => {
@@ -61,3 +62,4 @@ export class PerfilComponent implements OnInit {
       });
   }
 }
+

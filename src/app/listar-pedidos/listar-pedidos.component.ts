@@ -58,7 +58,7 @@ export class ListarPedidosComponent implements OnInit {
   }
  
   setIdPedidoBorrar(idPedido: string){this.idPedidoBorrar=idPedido; }
-  borrarPedido(/*idPedido: string*/) {
+  borrarPedido() {
     if(this.idPedidoBorrar==""){ alert("Error, No se puede completar la operación");}
     this.pedidoService.borrarPedido(this.idPedidoBorrar).subscribe({
         next: data => {this.ngOnInit();/*console.log("Registro Eliminado");*/}, 
@@ -67,3 +67,5 @@ export class ListarPedidosComponent implements OnInit {
         }});
   }
 }
+
+

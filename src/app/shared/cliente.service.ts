@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ClienteModel } from './cliente.model';
 import { SERVER_BASE_URL,getHeaders} from '../shared/utils';
@@ -40,3 +40,4 @@ export class ClienteService {
   }
 
 }
+

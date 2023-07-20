@@ -16,12 +16,14 @@ export class EditarProductosComponent implements OnInit {
   rol: string = '';
   producto = new ProductoModel("", "", "", 0,"");
   archivoSeleccionado:any
+  encabezado:string="Registrar Producto";
 
   constructor(private productoService: ProductoService, private clienteService: ClienteService, private route: ActivatedRoute, private router: Router) { }
   ngOnInit() {
     this.idProducto = this.route.snapshot.params['idProducto'];
 
     if (this.idProducto) {//Viene de Editar
+      this.encabezado="Editar Producto";
       this.productoService.obtenerProducto(this.idProducto).subscribe({
         next: data => {this.producto = data[0];}, 
         error: error => {validarAutorizacion(error); /*console.log(error);*/}
@@ -59,3 +61,4 @@ export class EditarProductosComponent implements OnInit {
     }
   }
 }
+

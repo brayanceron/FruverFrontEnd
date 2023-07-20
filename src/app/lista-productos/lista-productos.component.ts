@@ -29,6 +29,10 @@ export class ListaProductosComponent implements OnInit {
     this.productos = this.productoService.obtenerProductos();
     this.productos.subscribe({error: error => {validarAutorizacion(error);console.log(error)}});
 
+    //Cargando el carrito
+    localStorage.getItem('carrito')?this.carrito=JSON.parse(localStorage.getItem('carrito')!):this.carrito;
+    this.calcluarTotalCarrito();
+
     //Estableciendo el rol
     this.clienteService.getRol().subscribe({
       next: data=>{this.rol=data.rol;this.idCliente = data.idCliente},
@@ -43,11 +47,6 @@ export class ListaProductosComponent implements OnInit {
           if(error.status==500){alert(error.error.mensaje);return;}
           else{validarAutorizacion(error);}}
     });
-  }
-  buscarProducto(nombre: string) {
-    if(this.patron=='') return true
-    else if((nombre.toLowerCase()).includes(this.patron.toLowerCase()) && this.patron!='') return true;
-    else return false;
   }
 
   anadirAlCarrito(idProducto: string, nombreProducto: string, valor: number,) {
@@ -64,7 +63,8 @@ export class ListaProductosComponent implements OnInit {
       valor: valor,
       modelo: newProducto
     }
-    this.carrito.push(nuevoRegistro); localStorage.setItem("carrito",JSON.stringify(this.carrito));
+    this.carrito.push(nuevoRegistro); 
+    localStorage.setItem("carrito",JSON.stringify(this.carrito));
     this.calcluarTotalCarrito();
   }
 
@@ -73,7 +73,9 @@ export class ListaProductosComponent implements OnInit {
       if (p.idProducto == idProducto) {p.modelo.cantidadProducto++;}
     });
     this.calcluarTotalCarrito();
+    localStorage.setItem("carrito",JSON.stringify(this.carrito));
   }
+
   menosUno(idProducto: string) {
     let index: number = 0;
     this.carrito.forEach(p => {
@@ -84,6 +86,7 @@ export class ListaProductosComponent implements OnInit {
       index++;
     });
     this.calcluarTotalCarrito();
+    localStorage.setItem("carrito",JSON.stringify(this.carrito));
   }
 
   comprar() {
@@ -105,6 +108,13 @@ export class ListaProductosComponent implements OnInit {
   vaciarCarrito() {
     this.carrito = [];
     this.totalCarrito = 0;
+    localStorage.setItem("carrito",JSON.stringify(this.carrito));
+  }
+  
+  buscarProducto(nombre: string) {
+    if(this.patron=='') return true
+    else if((nombre.toLowerCase()).includes(this.patron.toLowerCase()) && this.patron!='') return true;
+    else return false;
   }
 
 }
