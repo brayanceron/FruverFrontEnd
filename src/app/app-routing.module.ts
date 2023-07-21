@@ -17,6 +17,7 @@ const routes: Routes = [
   { path: 'pedidos', component: ListarPedidosComponent,                       canActivate:[loginGuard] },
   { path: 'perfil', component: PerfilComponent,                               canActivate:[loginGuard] },
 
+  
   { path: '**', redirectTo: '/productos', pathMatch: 'full' }
 ];
 
