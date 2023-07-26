@@ -45,9 +45,10 @@
         <input type="text" class="form-control" name="correo" value="{{rol}}" disabled>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal">Cancelar</button>
-        <button type="button" class="btn btn-primary" data-mdb-toggle="modal"
-          data-mdb-target="#editarConfirmarModal">Actualizar</button>
+        <button type="button" class="btn btn-success" data-mdb-toggle="modal"
+          data-mdb-target="#editarConfirmarModal">Actualizar <i class="far fa-circle-check" ></i>
+        </button>
+        <button type="button" class="btn btn-primary" data-mdb-dismiss="modal">Cancelar <i class="far fa-circle-xmark"></i></button>
       </div>
     </div>
   </div>
@@ -66,10 +67,10 @@
         ¿Está seguro de que desea modificar su información personal?
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal">Cancelar</button>
         <button type="button" class="btn btn-success" data-mdb-dismiss="modal" (click)="actualizarClient()">
           Confirmar <i class="far fa-circle-check"></i>
         </button>
+        <button type="button" class="btn btn-primary" data-mdb-dismiss="modal">Cancelar <i class="far fa-circle-xmark"></i></button>
       </div>
     </div>
   </div>
@@ -89,10 +90,10 @@
         Esta operación es irreversible. ¿Está seguro de que desea cerrar su cuenta?
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal">Cancelar</button>
         <button type="button" class="btn btn-danger" data-mdb-dismiss="modal" (click)="borrarCliente()">
           Confirmar <i class="far fa-circle-check"></i>
         </button>
+        <button type="button" class="btn btn-primary" data-mdb-dismiss="modal">Cancelar <i class="far fa-circle-xmark"></i></button>
       </div>
     </div>
   </div>
