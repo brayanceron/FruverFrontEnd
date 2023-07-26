@@ -15,8 +15,9 @@ const routes: Routes = [
   { path: 'productos/agregar', component: EditarProductosComponent,           canActivate:[loginGuard] },
 
   { path: 'pedidos', component: ListarPedidosComponent,                       canActivate:[loginGuard] },
-  { path: 'perfil', component: PerfilComponent,                               canActivate:[loginGuard] },
+  { path: 'pedidos/editar/:idPedido', component: ListaProductosComponent,     canActivate:[loginGuard] },
 
+  { path: 'perfil', component: PerfilComponent,                               canActivate:[loginGuard] },
   
   { path: '**', redirectTo: '/productos', pathMatch: 'full' }
 ];
