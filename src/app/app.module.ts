@@ -12,6 +12,7 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { ListarPedidosComponent } from './listar-pedidos/listar-pedidos.component';
 import { AutenticacionComponent } from './autenticacion/autenticacion.component';
 import { PerfilComponent } from './perfil/perfil.component';
+import { ClienteService } from './shared/cliente.service';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { PerfilComponent } from './perfil/perfil.component';
   ],
   providers: [
     ProductoService,
-    PedidoService
+    PedidoService,
+    ClienteService
   ],
   bootstrap: [AppComponent]
 })
