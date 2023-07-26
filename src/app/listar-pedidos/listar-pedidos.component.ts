@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { PedidoModel } from '../shared/pedido.model';
-import { Observable, catchError } from 'rxjs';
+import { Observable } from 'rxjs';
 import { PedidoService } from '../shared/pedido.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { validarAutorizacion } from '../shared/utils';
@@ -54,7 +54,10 @@ export class ListarPedidosComponent implements OnInit {
     if(this.idPedidoProcesar==""){ alert("Error, No se puede completar la operación");}
     this.pedidoService.procesarPedido(this.idPedidoProcesar).subscribe({
       next: data => {this.ngOnInit();/*console.log("Registro Procesado");*/},
-      error: error => validarAutorizacion(error)});
+      error: error => {
+        if(error.status==409){alert(error.error.mensaje);return;}
+        validarAutorizacion(error);
+      }});
   }
  
   setIdPedidoBorrar(idPedido: string){this.idPedidoBorrar=idPedido; }
@@ -66,6 +69,11 @@ export class ListarPedidosComponent implements OnInit {
           validarAutorizacion(error);
         }});
   }
+
+  actualizarPedido(){
+    this.router.navigate([`/pedidos/editar/${this.detallePedidoSeleccionado[0].idPedido}`]);
+  }
+
 }
 
 

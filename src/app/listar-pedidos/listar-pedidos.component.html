@@ -56,6 +56,7 @@
 
 
 
+<!-- Modales -->
 <!-- Modal ver Productos-->
 <div class="modal fade modal-lg" id="productosModal" tabindex="-1" aria-labelledby="productosModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -86,7 +87,9 @@
             </table>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal">Cerrar</button>
+          <button type="button" class="btn btn-warning" data-mdb-dismiss="modal" (click)="actualizarPedido()" *ngIf="rol=='user'">
+            Actualizar <i class="fas fa-pen"></i></button>
+          <button type="button" class="btn btn-primary" data-mdb-dismiss="modal">Cerrar <i class="far fa-circle-xmark"></i></button>
           <!--<button class="btn btn-warning">Ok</button>-->
         </div>
       </div>
@@ -108,10 +111,10 @@ aria-hidden="true">
       Esta operación es irreversible. ¿Está seguro de que desea eliminar el pedido?
     </div>
     <div class="modal-footer">
-      <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal">Cancelar</button>
       <button type="button" class="btn btn-danger" data-mdb-dismiss="modal" (click)="borrarPedido()">
         Confirmar <i class="far fa-circle-check" ></i>
-      </button>
+      </button>      
+      <button type="button" class="btn btn-primary" data-mdb-dismiss="modal">Cancelar <i class="far fa-circle-xmark"></i></button>
     </div>
   </div>
 </div>
@@ -133,10 +136,10 @@ aria-hidden="true">
       ¿Está seguro de que desea marcar como procesado el pedido?
     </div>
     <div class="modal-footer">
-      <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal">Cancelar</button>
       <button type="button" class="btn btn-success" data-mdb-dismiss="modal" (click)="procesarPedido()">
         Confirmar <i class="far fa-circle-check" ></i>
       </button>
+      <button type="button" class="btn btn-primary" data-mdb-dismiss="modal">Cancelar <i class="far fa-circle-xmark"></i></button>
     </div>
   </div>
 </div>
