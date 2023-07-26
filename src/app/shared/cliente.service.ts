@@ -22,22 +22,19 @@ export class ClienteService {
   actualizarCliente(cliente: ClienteModel) { 
     return this.http.put<string>(`${this.BASE_URL}/clientes/${cliente.idCliente}`,cliente, getHeaders());
   }
+ 
   //AUTENTICACION
   
   login(correo: string, contrasena: string) {
     return this.http.post<any>(`${this.BASE_URL}/login`, { correo, contrasena }, { observe: 'response' });
   }
 
-  verificarToken(): boolean {
-    let b = true;
-    this.http.get<any>(`${this.BASE_URL}/verificarToken`, getHeaders()).subscribe({
-      error: error => {  if (error.status == 401) {b = false;}}
-    });
-    return b;
+  verificarToken(){
+    return this.http.get<any>(`${this.BASE_URL}/verificarToken`, getHeaders());
+    //return this.http.get<any>(`${this.BASE_URL}/verificarToken`, getHeaders()).toPromise();
   }
   getRol(){
     return this.http.get<any>(`${this.BASE_URL}/getRol`, getHeaders())
   }
-
 }
 
