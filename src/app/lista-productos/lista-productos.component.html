@@ -67,7 +67,8 @@
   <div class="col-3 " *ngIf="rol=='user'">
     <br>
     <div class="sticky-top">
-      <h4>Carrito de compras</h4>
+      <h4 *ngIf="idPedido">Editar Carrito de compras</h4>
+      <h4 *ngIf="!idPedido">Carrito de compras</h4>
       <table class="table table-striped">
         <tbody>
           <tr *ngFor="let p of carrito" class="">

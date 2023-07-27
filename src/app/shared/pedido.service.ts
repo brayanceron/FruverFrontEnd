@@ -23,8 +23,8 @@ export class PedidoService {
   agregarPedido(idCliente:string ,carrito: PedidoEnviarModel[]) {//idCliete debe ser el de que esta logeado
     return this.http.post<string>(`${this.BASE_URL}/pedidos`,{idCliente:idCliente,productos:carrito},getHeaders()); 
   }
-  actualizarPedido(idPedido:string, idCliente:string, carrito: PedidoEnviarModel[],procesado:boolean) {//idCliete debe ser el de que esta logeado
-    return this.http.put<string>(`${this.BASE_URL}/pedidos/${idPedido}`,{idCliente,productos:carrito,procesado},getHeaders()); 
+  actualizarPedido(idPedido:string,carrito: PedidoEnviarModel[],procesado:boolean) {//idCliete debe ser el de que esta logeado
+    return this.http.put<string>(`${this.BASE_URL}/pedidos/${idPedido}`,{productos:carrito,procesado},getHeaders()); 
   }
   borrarPedido(idPedido: string) { 
     return this.http.delete<string>(`${this.BASE_URL}/pedidos/${idPedido}`,getHeaders());

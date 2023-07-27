@@ -159,7 +159,7 @@ export class ListaProductosComponent implements OnInit {
   actualizarPedido(){
     let dataEnviar: PedidoEnviarModel[] = [];
     this.carrito.forEach(element => {dataEnviar.push(element.modelo);});
-    this.pedidoService.actualizarPedido(this.idPedido,this.idCliente,dataEnviar,false).subscribe({
+    this.pedidoService.actualizarPedido(this.idPedido,dataEnviar,false).subscribe({
         next: data => {this.router.navigate(["/pedidos"]);},
         error: error => { 
           if(error.status==409){alert(error.error.mensaje);return;}
