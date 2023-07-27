@@ -5,8 +5,9 @@ import { PedidoEnviarModel } from '../shared/pedidoenviar.model';
 import { ProductoService } from '../shared/producto.service';
 import { PedidoService } from '../shared/pedido.service';
 import { SERVER_BASE_URL,validarAutorizacion,validarRol } from '../shared/utils';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ClienteService } from '../shared/cliente.service';
+//import { PedidoModel } from '../shared/pedido.model';
 
 
 @Component({
@@ -16,33 +17,70 @@ import { ClienteService } from '../shared/cliente.service';
 })
 export class ListaProductosComponent implements OnInit {
   productos: Observable<ProductoModel[]> | undefined;
+  //pedido:Observable<Pedi>;
   rol:string='';
   idCliente:string='';
   carrito: any[] = [];
   totalCarrito: number = 0;
+  
+  idPedido:string="";
+  pedidoProcesado:Boolean=false;
   BASE_URL = SERVER_BASE_URL;
+  idProductoBorrar:string="";
 
-  patron="";
+  patron:string="";
 
-  constructor(private productoService: ProductoService, private pedidoService: PedidoService,private clienteService:ClienteService, private router: Router) { }
+  constructor(private productoService: ProductoService, private pedidoService: PedidoService,private clienteService:ClienteService, private route: ActivatedRoute, private router: Router) { }
   ngOnInit() {
     this.productos = this.productoService.obtenerProductos();
     this.productos.subscribe({error: error => {validarAutorizacion(error);console.log(error)}});
 
-    //Cargando el carrito
-    localStorage.getItem('carrito')?this.carrito=JSON.parse(localStorage.getItem('carrito')!):this.carrito;
-    this.calcluarTotalCarrito();
+    this.idPedido = this.route.snapshot.params['idPedido'];
 
     //Estableciendo el rol
     this.clienteService.getRol().subscribe({
-      next: data=>{this.rol=data.rol;this.idCliente = data.idCliente},
+      next: data=>{
+        this.rol=data.rol;
+        this.idCliente = data.idCliente
+
+        if(this.idPedido){//Editar Pedido
+          this.pedidoService.obtenerPedido(this.idPedido).subscribe({
+            next: data=>{
+              if(!data){this.router.navigate(["/pedidos"]);return;} //validando que el pedido exista o no este vacio
+              
+              this.pedidoProcesado=data.procesado;
+              let carritoEditar: any[] = [];
+              data.detallePedidos.forEach((element: any) => {
+                let nuevoRegistro = {
+                  idProducto: element.idProducto,
+                  nombre: element.producto.nombre,
+                  valor: element.producto.valor,
+                  modelo: new PedidoEnviarModel(element.idProducto, element.cantidadProducto)
+                }
+                carritoEditar.push(nuevoRegistro); 
+              });
+
+              localStorage.setItem("carritoEditar",JSON.stringify(carritoEditar));
+              localStorage.getItem('carritoEditar')?this.carrito=JSON.parse(localStorage.getItem('carritoEditar')!):this.carrito;
+              this.calcluarTotalCarrito();
+              if(this.idCliente!=data.idCliente){this.router.navigate(["/pedidos"]);return;} //validando que el pedido pertencezca al ciente
+            },
+            error: error=>{validarAutorizacion(error);}
+          });
+        }
+        else{//Listar productos
+          localStorage.getItem('carrito'+this.idCliente)?this.carrito=JSON.parse(localStorage.getItem('carrito'+this.idCliente)!):this.carrito;
+          this.calcluarTotalCarrito();
+        }
+      },
       error: error=>{validarRol(error);}
     });
   }
 
-  borrarProducto(idProducto: string) {
-    this.productoService.borrarProducto(idProducto).subscribe({
-        next: data => {this.ngOnInit();/*console.log("Registro Eliminado");*/}, 
+  setProductoBorrar(idProducto: string) {this.idProductoBorrar=idProducto;}
+  borrarProducto() {
+    this.productoService.borrarProducto(this.idProductoBorrar).subscribe({
+        next: data => {this.ngOnInit();}, 
         error: error => {
           if(error.status==500){alert(error.error.mensaje);return;}
           else{validarAutorizacion(error);}}
@@ -56,24 +94,21 @@ export class ListaProductosComponent implements OnInit {
     });
     if (b) return;
 
-    let newProducto = new PedidoEnviarModel(idProducto, 1);
     let nuevoRegistro = {
       idProducto: idProducto,
       nombre: nombreProducto,
       valor: valor,
-      modelo: newProducto
+      modelo: new PedidoEnviarModel(idProducto, 1)
     }
     this.carrito.push(nuevoRegistro); 
-    localStorage.setItem("carrito",JSON.stringify(this.carrito));
-    this.calcluarTotalCarrito();
+    this.saveCarrito();
   }
 
   masUno(idProducto: string) {
     this.carrito.forEach(p => {
       if (p.idProducto == idProducto) {p.modelo.cantidadProducto++;}
     });
-    this.calcluarTotalCarrito();
-    localStorage.setItem("carrito",JSON.stringify(this.carrito));
+    this.saveCarrito();
   }
 
   menosUno(idProducto: string) {
@@ -85,11 +120,10 @@ export class ListaProductosComponent implements OnInit {
       }
       index++;
     });
-    this.calcluarTotalCarrito();
-    localStorage.setItem("carrito",JSON.stringify(this.carrito));
+    this.saveCarrito();
   }
 
-  comprar() {
+  comprar() { //crear pedido
     let dataEnviar: PedidoEnviarModel[] = [];
     this.carrito.forEach(element => {dataEnviar.push(element.modelo);});
     this.pedidoService.agregarPedido(this.idCliente,dataEnviar).subscribe({
@@ -108,13 +142,30 @@ export class ListaProductosComponent implements OnInit {
   vaciarCarrito() {
     this.carrito = [];
     this.totalCarrito = 0;
-    localStorage.setItem("carrito",JSON.stringify(this.carrito));
+    this.saveCarrito();
+  }
+
+  saveCarrito(){
+    if(!this.idPedido){localStorage.setItem("carrito"+this.idCliente,JSON.stringify(this.carrito));}
+    this.calcluarTotalCarrito();
   }
   
   buscarProducto(nombre: string) {
     if(this.patron=='') return true
     else if((nombre.toLowerCase()).includes(this.patron.toLowerCase()) && this.patron!='') return true;
     else return false;
+  }
+
+  actualizarPedido(){
+    let dataEnviar: PedidoEnviarModel[] = [];
+    this.carrito.forEach(element => {dataEnviar.push(element.modelo);});
+    this.pedidoService.actualizarPedido(this.idPedido,this.idCliente,dataEnviar,false).subscribe({
+        next: data => {this.router.navigate(["/pedidos"]);},
+        error: error => { 
+          if(error.status==409){alert(error.error.mensaje);return;}
+          validarAutorizacion(error);
+        }
+      });
   }
 
 }

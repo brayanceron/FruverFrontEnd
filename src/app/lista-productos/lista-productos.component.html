@@ -52,7 +52,8 @@
                 <h5 class="card-title">{{ producto.nombre }}</h5>
                 <p class="card-text">{{ producto.detalle }} a {{ producto.valor }} $ la unidad </p>
                 <a class="btn btn-info" [routerLink]="['/productos/editar/', producto.idProducto]">Editar <i class="fas fa-pen"></i></a>
-                <a class="btn btn-danger" (click)="borrarProducto(producto.idProducto)">Borrar <i class="fas fa-trash-can"></i></a>
+                <a class="btn btn-danger" data-mdb-toggle="modal" data-mdb-target="#eliminarProductoModal" (click)="setProductoBorrar(producto.idProducto)">
+                  Borrar <i class="fas fa-trash-can"></i></a>
               </div>
             </div>
           </div>
@@ -89,15 +90,19 @@
 
             <td></td>
             <td><small>{{totalCarrito}} $</small></td>
-            <td><button type="button" class="btn btn-danger btn-sm" (click)="vaciarCarrito()">Vaciar <i
-                  class="fas fa-trash-can"></i></button></td>
+            <td><button type="button" class="btn btn-danger btn-sm" (click)="vaciarCarrito()">Vaciar <i class="fas fa-trash-can"></i></button></td>
           </tr>
         </tbody>
       </table>
-      <button class="btn btn-warning" data-mdb-toggle="modal" data-mdb-target="#comprarModal">
+      <button class="btn btn-success" data-mdb-toggle="modal" data-mdb-target="#comprarModal" *ngIf="!idPedido">
         Comprar <i class="fas fa-dollar-sign"></i>
       </button>
-
+      <button class="btn btn-warning" data-mdb-toggle="modal" data-mdb-target="#editarComprarModal" *ngIf="idPedido" [disabled]="pedidoProcesado">
+        Actualizar <i class="fas fa-pen"></i>
+      </button>
+      <button class="btn btn-primary" *ngIf="idPedido" [routerLink]="['/pedidos']">
+        Volver <i class="fas fa-circle-arrow-left"></i>
+      </button>
     </div>
 
   </div>
@@ -106,6 +111,7 @@
 
 
 <!-- Modales -->
+<!-- Modal confirmar compra -->
 <div class="modal fade" id="comprarModal" tabindex="-1" aria-labelledby="comprarModalLabel" aria-hidden="true"
   *ngIf="rol=='user'">
   <div class="modal-dialog">
@@ -115,15 +121,40 @@
         <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <p *ngIf="totalCarrito!=0">Esta operación es irreversible. ¿Está seguro que quiere confirmar la compra?</p>
+        <p *ngIf="totalCarrito!=0">¿Está seguro que quiere confirmar la compra?</p>
         <p *ngIf="totalCarrito==0">No hay productos en el carrito</p>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal">Cerrar</button>
-        <button type="button" *ngIf="totalCarrito!=0" class="btn btn-warning" data-mdb-dismiss="modal"
+        <button type="button" *ngIf="totalCarrito!=0" class="btn btn-success" data-mdb-dismiss="modal"
           (click)="comprar()" data-mdb-toggle="modal" data-mdb-target="#comprarConfirmadaModal">
           Comprar <i class="fas fa-dollar-sign"></i>
+        </button>        
+        <button type="button" class="btn btn-primary" data-mdb-dismiss="modal">Cerrar <i class="far fa-circle-xmark"></i></button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Modal confirmar modificar pedido -->
+<div class="modal fade" id="editarComprarModal" tabindex="-1" aria-labelledby="editarComprarModalLabel" aria-hidden="true"
+  *ngIf="rol=='user'">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editarComprarModalLabel">Modificar pedido</h5>
+        <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p *ngIf="totalCarrito!=0">¿Está seguro que quiere modificar el pedido compra?</p>
+        <p *ngIf="totalCarrito==0">No hay productos en el carrito</p>
+      </div>
+      <div class="modal-footer">        
+        <button type="button" *ngIf="totalCarrito!=0" class="btn btn-warning" data-mdb-dismiss="modal"
+          (click)="actualizarPedido()">
+          Actualizar <i class="far fa-circle-check"></i>
         </button>
+        <button type="button" class="btn btn-primary" data-mdb-dismiss="modal">Cerrar <i class="far fa-circle-xmark"></i></button>
       </div>
     </div>
   </div>
@@ -131,6 +162,7 @@
 
 
 
+<!-- Modal compra exitosa -->
 <div class="modal fade" id="comprarConfirmadaModal" tabindex="-1" aria-labelledby="comprarConfirmadaModalLabel"
   aria-hidden="true">
   <div class="modal-dialog">
@@ -149,4 +181,28 @@
       </div>
     </div>
   </div>
+</div>
+
+
+
+<!-- Modal confirmar eliminar producto -->
+<div class="modal fade" id="eliminarProductoModal" tabindex="-1" aria-labelledby="eliminarProductoModalLabel"
+aria-hidden="true">
+<div class="modal-dialog">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title" id="eliminarProductoModalModalLabel">Eliminar Producto</h5>
+      <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+    </div>
+    <div class="modal-body">
+      Esta operación es irreversible. ¿Está seguro de que desea eliminar el producto?
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-danger" data-mdb-dismiss="modal" (click)="borrarProducto()">
+        Confirmar <i class="far fa-circle-check" ></i>
+      </button>      
+      <button type="button" class="btn btn-primary" data-mdb-dismiss="modal">Cancelar <i class="far fa-circle-xmark"></i></button>
+    </div>
+  </div>
+</div>
 </div>
