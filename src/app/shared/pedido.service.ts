@@ -29,11 +29,11 @@ export class PedidoService {
   borrarPedido(idPedido: string) { 
     return this.http.delete<string>(`${this.BASE_URL}/pedidos/${idPedido}`,getHeaders());
   }
-
   procesarPedido(idPedido:string){//idCliete debe ser el de que esta logeado
     return this.http.put<string>(`${this.BASE_URL}/pedidos/procesar/${idPedido}`,{},getHeaders()); 
   }
 
 }
+
 
 
