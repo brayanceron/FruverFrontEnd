@@ -19,11 +19,11 @@ const routes: Routes = [
 
   { path: 'perfil', component: PerfilComponent,                               canActivate:[loginGuard] },
   
-  { path: '**', redirectTo: '/productos', pathMatch: 'full' }
+  { path: '**', redirectTo: 'productos', pathMatch: 'full' }
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes,{ useHash: true })],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }
